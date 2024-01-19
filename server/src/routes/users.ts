@@ -17,6 +17,11 @@ router.post("/register", async (req, res) => {
             });
         }
 
+        // use in case of destructuring
+        // const {email, password, first_name, last_name} = req.body;
+        // const newUser = new User({email, password, first_name, last_name});
+        // newUser.save();
+
         user = new User(req.body);
         await user.save();
 
@@ -37,7 +42,8 @@ router.post("/register", async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "User registered successfully"
+            message: "User registered successfully",
+            user: user
         });
 
     }catch (error) {
