@@ -1,9 +1,11 @@
-// @ts-nocheck
+// @ts-ignore
 import express from 'express';
+// @ts-ignore
 import cors from 'cors';
 import "dotenv/config";
 import mongoose from 'mongoose';
 import userRoutes from './routes/users';
+// @ts-ignore
 import bodyParser from 'body-parser';
 
 const PORT = process.env.PORT;

@@ -1,10 +1,19 @@
-// @ts-nocheck
+// @ts-ignore
 import express, {Request, Response} from "express";
 import User from "../models/user";
+// @ts-ignore
 import jwt from "jsonwebtoken";
+import { check, validationResult } from "express-validator";
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", [
+
+    check("email", "Email is required").isEmail(),
+    check("password", "Password must be 6 or more characters").isLength({ min: 6 }),
+    check("first_name", "First name is required").isString(),
+    check("last_name", "Last name is required").isString()
+
+], async (req, res) => {
     try {
         let user = await User.findOne({
             email: req.body.email
