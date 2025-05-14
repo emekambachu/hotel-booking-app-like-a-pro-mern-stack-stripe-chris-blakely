@@ -13,7 +13,17 @@ router.post("/register", [
     check("first_name", "First name is required").isString(),
     check("last_name", "Last name is required").isString()
 
-], async (req, res) => {
+], async (req: Request, res: Response) => {
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            success: false,
+            errors: errors.array()[0].msg,
+        });
+    }
+
     try {
         let user = await User.findOne({
             email: req.body.email
@@ -34,18 +44,17 @@ router.post("/register", [
         user = new User(req.body);
         await user.save();
 
-        const token = jwt.sign({
-            userId: user.id
-        },
+        const token = jwt.sign(
+            { userId: user.id },
             process.env.JWT_SECRET_KEY as string, {
                 expiresIn: "1d",
             }
         );
 
-        res.cookie("auth token", token, {
+        res.cookie("auth_token", token, {
             //expires: new Date(Date.now() + 900000),
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === "production", // secure cookie in production
             maxAge: 86400000
         });
 
@@ -56,7 +65,7 @@ router.post("/register", [
         });
 
     }catch (error) {
-        console.log(error);
+        console.log("Server Error", error);
         res.status(500).json({
             success: false,
             message: "Server error, contact your administrator"
