@@ -7,12 +7,14 @@ import {
 } from "react-router-dom";
 
 import Layout from "./layouts/Layout.tsx";
+import Register from "./pages/Register.tsx";
 
 const App = () => {
 
   return (
       <Router>
           <Routes>
+
               <Route
                   path="/"
                   element={
@@ -21,6 +23,7 @@ const App = () => {
                       </Layout>
               }
               />
+
               <Route
                   path="/search"
                   element={
@@ -29,7 +32,22 @@ const App = () => {
                       </Layout>
               }
               />
-              <Route path="*" element={<Navigate to="/" />} />
+
+              <Route
+                  path="/register"
+                  element={
+                    <Layout>
+                        <Register/>
+                    </Layout>
+                  }
+              />
+
+              <Route
+                  path="*"
+                  element={
+                  <Navigate to="/" />
+              }
+              />
           </Routes>
       </Router>
   );
