@@ -10,10 +10,22 @@ type RegisterFormData = {
 
 const Register = () => {
 
-    const {register} = useForm<RegisterFormData>();
+    const {
+        register,
+        watch,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<RegisterFormData>();
+
+    const onSubmit = handleSubmit((data) => {
+
+        console.log("Form Data", data);
+
+    });
 
     return (
         <form
+            onSubmit={onSubmit}
             className="flex flex-col gap-5"
         >
             <h2 className="text-3xl font-bold">
@@ -33,6 +45,11 @@ const Register = () => {
                             }
                         })}
                     ></input>
+                    {errors.first_name && (
+                        <span className="text-red-500 text-sm">
+                            {errors.first_name.message}
+                        </span>
+                    )}
                 </label>
 
                 <label className="tet-gray-700 text-sm font-bold flex-1">
@@ -47,6 +64,11 @@ const Register = () => {
                             },
                         })}
                     ></input>
+                    {errors.last_name && (
+                        <span className="text-red-500 text-sm">
+                            {errors.last_name.message}
+                        </span>
+                    )}
                 </label>
 
             </div>
@@ -64,6 +86,11 @@ const Register = () => {
                             }
                         })}
                     ></input>
+                    {errors.email && (
+                        <span className="text-red-500 text-sm">
+                            {errors.email.message}
+                        </span>
+                    )}
                 </label>
             </div>
 
@@ -84,6 +111,11 @@ const Register = () => {
                             }
                         })}
                     ></input>
+                    {errors.password && (
+                        <span className="text-red-500 text-sm">
+                            {errors.password.message}
+                        </span>
+                    )}
                 </label>
 
                 <label className="tet-gray-700 text-sm font-bold flex-1">
@@ -94,16 +126,31 @@ const Register = () => {
                         {...register("confirm_password", {
                             required: {
                                 value: true,
-                                message: "Confirm password is required"
+                                message: "confirm password is required"
                             },
-                            minLength: {
-                                value: 6,
-                                message: "Password must be at least 6 characters"
+                            validate:(val) => {
+                                if (val !== watch("password")) {
+                                    return "Your passwords do not match";
+                                }
                             }
                         })}
                     ></input>
+                    {errors.confirm_password && (
+                        <span className="text-red-500 text-sm">
+                            {errors.confirm_password.message}
+                        </span>
+                    )}
                 </label>
             </div>
+
+            <span>
+                <button
+                    type="submit"
+                    className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-50"
+                >
+                    Create Account
+                </button>
+            </span>
 
         </form>
     )
