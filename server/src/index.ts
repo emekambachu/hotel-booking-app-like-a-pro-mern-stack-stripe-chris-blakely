@@ -5,6 +5,7 @@ import cors from 'cors';
 import "dotenv/config";
 import mongoose from 'mongoose';
 import userRoutes from './routes/users';
+import authRoutes from './routes/auth';
 // @ts-ignore
 import bodyParser from 'body-parser';
 
@@ -23,6 +24,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Prefix all routes with /api/users
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {

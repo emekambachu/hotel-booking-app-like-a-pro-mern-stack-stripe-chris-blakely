@@ -57,6 +57,17 @@ router.post(
                 maxAge: 86400000
             });
 
+            return res.status(200).json({
+                success: true,
+                message: "Login successful",
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                },
+            });
+
         }catch (error){
             console.error("Login Error", error);
             return res.status(500).json({
@@ -66,3 +77,5 @@ router.post(
         }
     }
 );
+
+export default router;
