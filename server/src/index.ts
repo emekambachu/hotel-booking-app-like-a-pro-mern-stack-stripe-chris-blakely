@@ -8,6 +8,7 @@ import userRoutes from './routes/users';
 import authRoutes from './routes/auth';
 // @ts-ignore
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 
 const PORT = process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -18,9 +19,13 @@ mongoose.connect(MONGODB_URI as string, {
 });
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Prefix all routes with /api/users
