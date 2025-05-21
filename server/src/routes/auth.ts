@@ -85,4 +85,12 @@ router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
     });
 });
 
+router.post("/logout", (req: Request, res: Response) => {
+    res.clearCookie("auth_token");
+    return res.status(200).json({
+        success: true,
+        message: "Logout successful",
+    });
+});
+
 export default router;
